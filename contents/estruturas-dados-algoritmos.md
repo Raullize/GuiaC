@@ -502,6 +502,236 @@ void ordenarPorPrioridade(ListaTarefas *lista) {
 
 ---
 
+# 📋 Busca e Operações com Listas Sequenciais
+
+Listas sequenciais são estruturas de dados lineares que armazenam elementos em posições contíguas de memória, geralmente implementadas como arrays. São ideais para situações em que o número máximo de elementos é conhecido ou não muda com frequência.
+
+## 🧭 Navegação e Conceitos
+
+- **Lista Sequencial**: Estrutura baseada em array, com acesso direto por índice.
+- **Navegação**: Feita por índices (ex: `lista[0]`, `lista[1]`, ...).
+- **Tamanho**: Pode ser fixo (array estático) ou dinâmico (alocação dinâmica).
+
+## 🗂️ Operações Básicas
+
+1. **Inserção**
+   - Início
+   - Fim
+   - Posição específica
+2. **Remoção**
+   - Início
+   - Fim
+   - Posição específica
+3. **Busca**
+   - Sequencial (linear)
+
+## 📝 Exemplo Prático em C
+
+Vamos implementar um menu para manipular uma lista sequencial de pessoas (nome e RG):
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 100
+
+// Estrutura para pessoa
+typedef struct {
+    char nome[50];
+    int rg;
+} Pessoa;
+
+// Função para limpar a tela (Windows/Linux)
+void limparTela() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+// Imprime a lista sequencial
+void imprimeSequencial(Pessoa lista[], int tamanho) {
+    printf("\nLista:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d - %s, %d\n", i, lista[i].nome, lista[i].rg);
+    }
+}
+
+// Inserção no início
+void inserirInicio(Pessoa lista[], int *tamanho, char nome[], int rg) {
+    if (*tamanho >= MAX) {
+        printf("Lista cheia!\n");
+        return;
+    }
+    for (int i = *tamanho; i > 0; i--) {
+        lista[i] = lista[i-1];
+    }
+    strcpy(lista[0].nome, nome);
+    lista[0].rg = rg;
+    (*tamanho)++;
+}
+
+// Inserção no fim
+void inserirFim(Pessoa lista[], int *tamanho, char nome[], int rg) {
+    if (*tamanho >= MAX) {
+        printf("Lista cheia!\n");
+        return;
+    }
+    strcpy(lista[*tamanho].nome, nome);
+    lista[*tamanho].rg = rg;
+    (*tamanho)++;
+}
+
+// Inserção em posição específica
+void inserirPosicao(Pessoa lista[], int *tamanho, char nome[], int rg, int pos) {
+    if (*tamanho >= MAX || pos < 0 || pos > *tamanho) {
+        printf("Posição inválida ou lista cheia!\n");
+        return;
+    }
+    for (int i = *tamanho; i > pos; i--) {
+        lista[i] = lista[i-1];
+    }
+    strcpy(lista[pos].nome, nome);
+    lista[pos].rg = rg;
+    (*tamanho)++;
+}
+
+// Remoção do início
+void removerInicio(Pessoa lista[], int *tamanho) {
+    if (*tamanho == 0) {
+        printf("Lista vazia!\n");
+        return;
+    }
+    for (int i = 0; i < *tamanho-1; i++) {
+        lista[i] = lista[i+1];
+    }
+    (*tamanho)--;
+}
+
+// Remoção do fim
+void removerFim(Pessoa lista[], int *tamanho) {
+    if (*tamanho == 0) {
+        printf("Lista vazia!\n");
+        return;
+    }
+    (*tamanho)--;
+}
+
+// Remoção em posição específica
+void removerPosicao(Pessoa lista[], int *tamanho, int pos) {
+    if (*tamanho == 0 || pos < 0 || pos >= *tamanho) {
+        printf("Posição inválida ou lista vazia!\n");
+        return;
+    }
+    for (int i = pos; i < *tamanho-1; i++) {
+        lista[i] = lista[i+1];
+    }
+    (*tamanho)--;
+}
+
+// Busca sequencial por RG
+int buscarPorRG(Pessoa lista[], int tamanho, int rg) {
+    for (int i = 0; i < tamanho; i++) {
+        if (lista[i].rg == rg) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    Pessoa lista[MAX];
+    int tamanho = 0;
+    int opcao;
+    do {
+        printf("\n=== Menu Lista Sequencial ===\n");
+        printf("1. Inserir no início\n");
+        printf("2. Inserir no fim\n");
+        printf("3. Inserir em posição\n");
+        printf("4. Remover do início\n");
+        printf("5. Remover do fim\n");
+        printf("6. Remover em posição\n");
+        printf("7. Buscar por RG\n");
+        printf("8. Imprimir lista\n");
+        printf("9. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        limparTela();
+        char nome[50];
+        int rg, pos, idx;
+        switch(opcao) {
+            case 1:
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirInicio(lista, &tamanho, nome, rg);
+                break;
+            case 2:
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirFim(lista, &tamanho, nome, rg);
+                break;
+            case 3:
+                printf("Posição: "); scanf("%d", &pos);
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirPosicao(lista, &tamanho, nome, rg, pos);
+                break;
+            case 4:
+                removerInicio(lista, &tamanho);
+                break;
+            case 5:
+                removerFim(lista, &tamanho);
+                break;
+            case 6:
+                printf("Posição: "); scanf("%d", &pos);
+                removerPosicao(lista, &tamanho, pos);
+                break;
+            case 7:
+                printf("RG: "); scanf("%d", &rg);
+                idx = buscarPorRG(lista, tamanho, rg);
+                if (idx != -1) {
+                    printf("Encontrado na posição %d: %s\n", idx, lista[idx].nome);
+                } else {
+                    printf("RG não encontrado!\n");
+                }
+                break;
+            case 8:
+                imprimeSequencial(lista, tamanho);
+                break;
+            case 9:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida!\n");
+        }
+    } while(opcao != 9);
+    return 0;
+}
+```
+
+## 🔎 Resumo das Operações
+
+| Operação                | Complexidade |
+|------------------------|--------------|
+| Inserção no início     | O(n)         |
+| Inserção no fim        | O(1)         |
+| Inserção em posição    | O(n)         |
+| Remoção do início      | O(n)         |
+| Remoção do fim         | O(1)         |
+| Remoção em posição     | O(n)         |
+| Busca sequencial       | O(n)         |
+
+## 🧠 Dicas e Boas Práticas
+
+- Sempre verifique se a lista está cheia ou vazia antes de inserir/remover.
+- Prefira arrays dinâmicos (`malloc`/`realloc`) para listas que crescem muito.
+- Use funções para modularizar o código e evitar repetição.
+- Para buscas frequentes, considere outras estruturas (listas encadeadas, árvores, etc).
+
+---
+
 [🔙 Voltar ao índice principal](../README.md)
 
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=A8B9CC&height=120&section=footer"/> 
