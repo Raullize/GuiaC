@@ -21,13 +21,16 @@ Bem-vindo ao **GuiaC**, um recurso prático e abrangente para aprender a linguag
 13. [♻️ Estruturas de Repetição](contents/estruturas-repeticao.md)
 14. [🔠 Arrays e Strings](contents/arrays-strings.md)
 15. [🔣 Funções: Declaração e Definição](contents/funcoes.md)
-16. [🔄 Funções com Retorno e sem Retorno](contents/funcoes-retorno.md)
-17. [🌍 Variáveis Globais e Escopo de Variáveis](contents/escopo-variaveis.md)
-18. [🏗️ Passagem de Argumentos por Valor e Referência](contents/passagem-argumentos.md)
-19. [🔁 Funções Recursivas](contents/funcoes-recursivas.md)
-20. [🔧 Structs](contents/structs.md)
-21. [🏛️ Ponteiros](contents/ponteiros.md)
-22. [📚 Alocação Dinâmica de Memória](contents/alocacao-dinamica.md)
+16. [🔧 Funções Específicas](contents/funcoes-especificas.md)
+17. [🔄 Funções com Retorno e sem Retorno](contents/funcoes-retorno.md)
+18. [🌍 Variáveis Globais e Escopo de Variáveis](contents/escopo-variaveis.md)
+19. [🏗️ Passagem de Argumentos por Valor e Referência](contents/passagem-argumentos.md)
+20. [🔁 Funções Recursivas](contents/funcoes-recursivas.md)
+21. [🏛️ Structs](contents/structs.md)
+22. [🏛️ Ponteiros](contents/ponteiros.md)
+23. [📚 Alocação Dinâmica de Memória](contents/alocacao-dinamica.md)
+24. [📚 Bibliotecas do Sistema](contents/bibliotecas-sistema.md)
+25. [📊 Estruturas de Dados e Algoritmos](contents/estruturas-dados-algoritmos.md)
 
 ---
 
