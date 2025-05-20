@@ -32,6 +32,7 @@ Bem-vindo ao **GuiaC**, um recurso prático e abrangente para aprender a linguag
 24. [📚 Bibliotecas do Sistema](contents/bibliotecas-sistema.md)
 25. [📊 Estruturas de Dados e Algoritmos](contents/estruturas-dados-algoritmos.md)
 26. [🔍 Busca e Operações com Listas Sequenciais](contents/estruturas-dados-algoritmos.md#-busca-e-operações-com-listas-sequenciais)
+27. [🔗 Busca e Operações com Listas Encadeadas](contents/estruturas-dados-algoritmos.md#-busca-e-operações-com-listas-encadeadas)
 
 ---
 

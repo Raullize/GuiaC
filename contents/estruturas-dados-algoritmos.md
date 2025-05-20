@@ -542,13 +542,9 @@ typedef struct {
     int rg;
 } Pessoa;
 
-// Função para limpar a tela (Windows/Linux)
+// Função para limpar a tela
 void limparTela() {
-#ifdef _WIN32
     system("cls");
-#else
-    system("clear");
-#endif
 }
 
 // Imprime a lista sequencial
@@ -711,24 +707,281 @@ int main() {
 }
 ```
 
-## 🔎 Resumo das Operações
-
-| Operação                | Complexidade |
-|------------------------|--------------|
-| Inserção no início     | O(n)         |
-| Inserção no fim        | O(1)         |
-| Inserção em posição    | O(n)         |
-| Remoção do início      | O(n)         |
-| Remoção do fim         | O(1)         |
-| Remoção em posição     | O(n)         |
-| Busca sequencial       | O(n)         |
-
 ## 🧠 Dicas e Boas Práticas
 
 - Sempre verifique se a lista está cheia ou vazia antes de inserir/remover.
 - Prefira arrays dinâmicos (`malloc`/`realloc`) para listas que crescem muito.
 - Use funções para modularizar o código e evitar repetição.
 - Para buscas frequentes, considere outras estruturas (listas encadeadas, árvores, etc).
+
+---
+
+# 🔗 Busca e Operações com Listas Encadeadas
+
+Listas encadeadas são estruturas de dados dinâmicas compostas por nós (nodes), onde cada nó armazena um valor e um ponteiro para o próximo nó. Diferente das listas sequenciais (arrays), as listas encadeadas não exigem que os elementos estejam em posições contíguas de memória, permitindo inserções e remoções eficientes em qualquer posição.
+
+## 🧭 Navegação e Conceitos
+
+- **Lista Encadeada**: Estrutura dinâmica, cada elemento aponta para o próximo.
+- **Nó (Node)**: Estrutura que armazena os dados e o ponteiro para o próximo nó.
+- **Cabeça da lista**: Ponteiro para o primeiro nó.
+- **Fim da lista**: O último nó aponta para `NULL`.
+
+## 🗂️ Operações Básicas
+
+1. **Inserção**
+   - Início
+   - Fim
+   - Posição específica
+2. **Remoção**
+   - Início
+   - Fim
+   - Posição específica
+3. **Busca**
+   - Sequencial (linear)
+
+## 📝 Exemplo Prático em C
+
+Vamos implementar um menu para manipular uma lista encadeada de pessoas (nome e RG):
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Estrutura para pessoa (nó da lista)
+typedef struct Pessoa {
+    char nome[50];
+    int rg;
+    struct Pessoa *proximo;
+} Pessoa;
+
+// Limpa a tela (Windows/Linux)
+void limparTela() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+// Conta o tamanho da lista
+int tamanhoLista(Pessoa *inicio) {
+    int tam = 0;
+    while (inicio != NULL) {
+        tam++;
+        inicio = inicio->proximo;
+    }
+    return tam;
+}
+
+// Imprime a lista encadeada
+void imprimeLista(Pessoa *inicio) {
+    int pos = 0;
+    printf("\nLista Encadeada:\n");
+    while (inicio != NULL) {
+        printf("%d - %s, %d\n", pos, inicio->nome, inicio->rg);
+        inicio = inicio->proximo;
+        pos++;
+    }
+}
+
+// Inserção no início
+void inserirInicio(Pessoa **inicio, char nome[], int rg) {
+    Pessoa *novo = (Pessoa*)malloc(sizeof(Pessoa));
+    strcpy(novo->nome, nome);
+    novo->rg = rg;
+    novo->proximo = *inicio;
+    *inicio = novo;
+}
+
+// Inserção no fim
+void inserirFim(Pessoa **inicio, char nome[], int rg) {
+    Pessoa *novo = (Pessoa*)malloc(sizeof(Pessoa));
+    strcpy(novo->nome, nome);
+    novo->rg = rg;
+    novo->proximo = NULL;
+    if (*inicio == NULL) {
+        *inicio = novo;
+        return;
+    }
+    Pessoa *p = *inicio;
+    while (p->proximo != NULL) {
+        p = p->proximo;
+    }
+    p->proximo = novo;
+}
+
+// Inserção em posição específica
+void inserirPosicao(Pessoa **inicio, char nome[], int rg, int pos) {
+    if (pos == 0) {
+        inserirInicio(inicio, nome, rg);
+        return;
+    }
+    int i = 0;
+    Pessoa *p = *inicio;
+    while (p != NULL && i < pos - 1) {
+        p = p->proximo;
+        i++;
+    }
+    if (p == NULL) {
+        printf("Posição inválida!\n");
+        return;
+    }
+    Pessoa *novo = (Pessoa*)malloc(sizeof(Pessoa));
+    strcpy(novo->nome, nome);
+    novo->rg = rg;
+    novo->proximo = p->proximo;
+    p->proximo = novo;
+}
+
+// Remoção do início
+void removerInicio(Pessoa **inicio) {
+    if (*inicio == NULL) {
+        printf("Lista vazia!\n");
+        return;
+    }
+    Pessoa *remover = *inicio;
+    *inicio = remover->proximo;
+    free(remover);
+}
+
+// Remoção do fim
+void removerFim(Pessoa **inicio) {
+    if (*inicio == NULL) {
+        printf("Lista vazia!\n");
+        return;
+    }
+    if ((*inicio)->proximo == NULL) {
+        free(*inicio);
+        *inicio = NULL;
+        return;
+    }
+    Pessoa *p = *inicio;
+    while (p->proximo->proximo != NULL) {
+        p = p->proximo;
+    }
+    free(p->proximo);
+    p->proximo = NULL;
+}
+
+// Remoção em posição específica
+void removerPosicao(Pessoa **inicio, int pos) {
+    if (*inicio == NULL) {
+        printf("Lista vazia!\n");
+        return;
+    }
+    if (pos == 0) {
+        removerInicio(inicio);
+        return;
+    }
+    int i = 0;
+    Pessoa *p = *inicio;
+    while (p->proximo != NULL && i < pos - 1) {
+        p = p->proximo;
+        i++;
+    }
+    if (p->proximo == NULL) {
+        printf("Posição inválida!\n");
+        return;
+    }
+    Pessoa *remover = p->proximo;
+    p->proximo = remover->proximo;
+    free(remover);
+}
+
+// Busca sequencial por RG
+int buscarPorRG(Pessoa *inicio, int rg) {
+    int pos = 0;
+    while (inicio != NULL) {
+        if (inicio->rg == rg) {
+            return pos;
+        }
+        inicio = inicio->proximo;
+        pos++;
+    }
+    return -1;
+}
+
+int main() {
+    Pessoa *lista = NULL;
+    int opcao;
+    do {
+        printf("\n=== Menu Lista Encadeada ===\n");
+        printf("1. Inserir no início\n");
+        printf("2. Inserir no fim\n");
+        printf("3. Inserir em posição\n");
+        printf("4. Remover do início\n");
+        printf("5. Remover do fim\n");
+        printf("6. Remover em posição\n");
+        printf("7. Buscar por RG\n");
+        printf("8. Imprimir lista\n");
+        printf("9. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        limparTela();
+        char nome[50];
+        int rg, pos, idx;
+        switch(opcao) {
+            case 1:
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirInicio(&lista, nome, rg);
+                break;
+            case 2:
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirFim(&lista, nome, rg);
+                break;
+            case 3:
+                printf("Posição: "); scanf("%d", &pos);
+                printf("Nome: "); scanf("%s", nome);
+                printf("RG: "); scanf("%d", &rg);
+                inserirPosicao(&lista, nome, rg, pos);
+                break;
+            case 4:
+                removerInicio(&lista);
+                break;
+            case 5:
+                removerFim(&lista);
+                break;
+            case 6:
+                printf("Posição: "); scanf("%d", &pos);
+                removerPosicao(&lista, pos);
+                break;
+            case 7:
+                printf("RG: "); scanf("%d", &rg);
+                idx = buscarPorRG(lista, rg);
+                if (idx != -1) {
+                    printf("Encontrado na posição %d\n", idx);
+                } else {
+                    printf("RG não encontrado!\n");
+                }
+                break;
+            case 8:
+                imprimeLista(lista);
+                break;
+            case 9:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida!\n");
+        }
+    } while(opcao != 9);
+    // Libera toda a memória da lista ao sair
+    while (lista != NULL) {
+        removerInicio(&lista);
+    }
+    return 0;
+}
+```
+
+## 🧠 Dicas e Boas Práticas
+
+- Sempre libere a memória dos nós removidos com `free`.
+- Inicialize o ponteiro da lista com `NULL`.
+- Use funções para modularizar o código e evitar repetição.
+- Para buscas frequentes, considere listas ordenadas ou outras estruturas (árvores, hash, etc).
 
 ---
 
