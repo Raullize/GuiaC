@@ -756,13 +756,9 @@ typedef struct Pessoa {
     struct Pessoa *proximo;
 } Pessoa;
 
-// Limpa a tela (Windows/Linux)
+// Limpa a tela
 void limparTela() {
-#ifdef _WIN32
     system("cls");
-#else
-    system("clear");
-#endif
 }
 
 // Conta o tamanho da lista
